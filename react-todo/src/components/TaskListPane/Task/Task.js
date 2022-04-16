@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState, useEffect } from 'react'
 import TaskInfo from "../../TaskInfo/TaskInfo"
 import "./styles.css"
 
@@ -6,6 +6,10 @@ const Task = (props) => {
     const { task, onRemoveTask, onUpdateTask, onSelectingTask } = props;
     const [isViewingDetail, setViewingDetail] = useState(false);
     const [isSelected, setSelected] = useState(false);
+
+    useEffect(() => {
+        onSelectingTask(task.id, isSelected);
+    }, [isSelected]);
 
     const removeTask = (e) => {
         onRemoveTask(e.target.id);
@@ -22,7 +26,6 @@ const Task = (props) => {
 
     const handleSelecting = () => {
         setSelected(prevState => {
-            onSelectingTask(task.id, !isSelected);
             return !prevState;
         });
     }

@@ -13,7 +13,13 @@ const TaskListPane = (props) => {
     if (isSelected) {
       setSelecting(prevState => [...prevState, taskID]);
     } else {
-      setSelecting(prevState => prevState.filter(item => item.id !== taskID));
+      setSelecting(prevState => {
+        let newState = [];
+        for (let i = 0; i < prevState.length; i++){
+          if (prevState[i] !== taskID) newState.push(prevState[i]);
+        }
+        return newState;
+      });
     }
   }
 
@@ -30,15 +36,11 @@ const TaskListPane = (props) => {
     setDisplayList(toDoList.filter(task => task.name.includes(searchValue)));
   }, [searchValue, toDoList])
 
-  if (!toDoList?.length) {
-    return <div>You've done every task</div>
-  }
-
   return (
     <div className="container">
       <h3>Todo List</h3>
       <input type="text" className='max-width' placeholder="Search" onChange={search} value={searchValue}/>
-      <TaskList toDoList={displayList} onRemoveTask={onRemoveTask} onUpdateTask={onUpdateTask} onSelectingTask={handleSelecting} onRemoveTasks={removeTasks}/>
+      <TaskList toDoList={displayList} onRemoveTask={onRemoveTask} onUpdateTask={onUpdateTask} onSelectingTask={handleSelecting} onRemoveTasks={removeTasks} isSearching={searchValue ? true : false}/>
       {!selecting?.length ?
         null :
         <div className="multiple-select-action">
