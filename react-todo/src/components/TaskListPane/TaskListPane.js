@@ -13,13 +13,7 @@ const TaskListPane = (props) => {
     if (isSelected) {
       setSelecting(prevState => [...prevState, taskID]);
     } else {
-      setSelecting(prevState => {
-        let newState = [];
-        for (let i = 0; i < prevState.length; i++){
-          if (prevState[i] !== taskID) newState.push(prevState[i]);
-        }
-        return newState;
-      });
+      setSelecting(prevState => prevState.filter(item => item !== taskID));
     }
   }
 
